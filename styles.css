@@ -215,3 +215,99 @@ body.dark{
 }
 body.dark .nav{background:linear-gradient(180deg, rgba(7,16,37,0.75), rgba(7,16,37,0.45));border-bottom:1px solid rgba(255,255,255,0.03)}
 body.dark .glass-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04)}
+
+.experience-card {
+padding: 26px;
+}
+
+
+.experience-header {
+display: flex;
+align-items: center;
+gap: 18px;
+margin-bottom: 16px;
+}
+
+
+.company-logo {
+width: 56px;
+height: 56px;
+border-radius: 14px;
+background: rgba(255,255,255,0.6);
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+
+.company-logo img {
+max-width: 70%;
+max-height: 70%;
+object-fit: contain;
+}
+
+
+.company-meta h4 {
+margin: 0;
+font-size: 18px;
+font-weight: 800;
+}
+
+
+.company-name {
+display: block;
+font-weight: 700;
+color: var(--muted);
+}
+
+
+.duration {
+display: block;
+font-size: 13px;
+color: var(--muted);
+}
+
+
+.experience-summary {
+margin: 14px 0 16px;
+line-height: 1.6;
+color: var(--text);
+}
+
+
+.experience-points {
+padding-left: 18px;
+margin: 0 0 16px;
+}
+
+
+.experience-points li {
+margin-bottom: 8px;
+color: var(--muted);
+}
+
+
+/* .experience-tech { */
+/* display: flex; */
+/* } */
+
+.experience-tech {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+}
+
+
+.experience-tech span {
+padding: 6px 12px;
+font-size: 12px;
+border-radius: 999px;
+background: rgba(15,23,36,0.06);
+font-weight: 700;
+}
+
+
+body.dark .experience-tech span {
+background: rgba(255,255,255,0.08);
+}
