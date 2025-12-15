@@ -361,6 +361,7 @@ background: rgba(255,255,255,0.08);
   backdrop-filter: blur(6px);
 }
 
+
 body.dark .project-tags span {
   background: linear-gradient(
     135deg,
