@@ -314,6 +314,53 @@ body.dark .experience-tech span {
 background: rgba(255,255,255,0.08);
 }
 
+* ===== Premium Projects ===== */
+
+.project-desc {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+/* Grid polish */
+.premium-projects {
+  gap: 22px;
+}
+
+/* Project card hover */
+.project-card {
+  transition: transform .4s ease, box-shadow .4s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 80px rgba(2,6,23,0.12);
+}
+
+/* Premium tags */
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.project-tags span {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    rgba(79,70,229,0.12),
+    rgba(236,72,153,0.12)
+  );
+  color: var(--text);
+  border: 1px solid rgba(15,23,36,0.08);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  backdrop-filter: blur(6px);
+}
+
 body.dark .project-tags span {
   background: linear-gradient(
     135deg,
