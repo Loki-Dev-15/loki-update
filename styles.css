@@ -288,10 +288,6 @@ color: var(--muted);
 }
 
 
-/* .experience-tech { */
-/* display: flex; */
-/* } */
-
 .experience-tech {
 display: flex;
 flex-wrap: wrap;
