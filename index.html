@@ -345,7 +345,9 @@
             name: formData.get("name"),
             email: formData.get("email"),
             message: formData.get("message"),
-            date: new Date().toLocaleString()
+            //date: new Date().toLocaleString()
+            date: new Date().toISOString()
+            //date: formData.get("_date").toLocaleDateString()
           };
           document.getElementById('messagesblock').style.display = 'block';
           messages.push(newMessage);
@@ -371,23 +373,130 @@
       messages.forEach(msg => addMessageCard(msg));
     }
 
+
+
+  function parseIndianLocaleDate(s) {
+    if (typeof s !== 'string') return null;
+    const parts = s.split(',');
+    if (parts.length < 2) return null;
+
+    const datePart = parts[0].trim();        // "23/12/2025"
+    const timePart = parts[1].trim().toLowerCase(); // "12:09:45 pm"
+
+    const d = datePart.split('/');
+    if (d.length !== 3) return null;
+
+    const dd = Number(d[0]);
+    const mm = Number(d[1]);
+    const yyyy = Number(d[2]);
+    if (!dd || !mm || !yyyy) return null;
+
+    // time: "hh:mm:ss am/pm" (seconds may be missing)
+    const timePieces = timePart.split(' ');
+    if (timePieces.length < 2) return null;
+
+    const hms = timePieces[0].split(':');
+    let hh = Number(hms[0]);
+    const min = Number(hms[1] ?? 0);
+    const sec = Number(hms[2] ?? 0);
+    const meridian = timePieces[1];
+
+    if (isNaN(hh) || isNaN(min) || isNaN(sec)) return null;
+
+    // Convert to 24-hour clock
+    if (meridian === 'pm' && hh < 12) hh += 12;
+    if (meridian === 'am' && hh === 12) hh = 0;
+
+    // Construct Date (local time)
+    const dt = new Date(yyyy, mm - 1, dd, hh, min, sec);
+    return isNaN(dt.getTime()) ? null : dt;
+  }
+
+
+  function timeAgo(input) {
+    let dateObj = null;
+
+    if (input instanceof Date) {
+      dateObj = input;
+    } else if (typeof input === 'string') {
+      // Try ISO first (reliable)
+      const isoCandidate = new Date(input);
+      if (!isNaN(isoCandidate.getTime())) {
+        dateObj = isoCandidate;
+      } else {
+        // Fallback to dd/mm/yyyy, hh:mm:ss am/pm
+        dateObj = parseIndianLocaleDate(input);
+      }
+    }
+
+    if (!dateObj || isNaN(dateObj.getTime())) {
+      console.warn('Invalid date supplied to timeAgo:', input);
+      return 'Invalid date';
+    }
+
+    const now = new Date();
+    const seconds = Math.floor((now - dateObj) / 1000);
+
+    if (seconds < 60) return 'Just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)} min ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)} hrs ago`;
+
+    // For older messages, show a formatted date like "23 Dec 2025"
+    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+    return dateObj.toLocaleDateString('en-GB', options);
+  }
+
+  function timeAgo(input) {
+    let dateObj = null;
+
+    if (input instanceof Date) {
+      dateObj = input;
+    } else if (typeof input === 'string') {
+      // Try ISO first (reliable)
+      const isoCandidate = new Date(input);
+      if (!isNaN(isoCandidate.getTime())) {
+        dateObj = isoCandidate;
+      } else {
+        // Fallback to dd/mm/yyyy, hh:mm:ss am/pm
+        dateObj = parseIndianLocaleDate(input);
+      }
+    }
+
+    if (!dateObj || isNaN(dateObj.getTime())) {
+      console.warn('Invalid date supplied to timeAgo:', input);
+      return 'Invalid date';
+    }
+
+    const now = new Date();
+    const seconds = Math.floor((now - dateObj) / 1000);
+
+    if (seconds < 60) return 'Just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)} min ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)} hrs ago`;
+
+    // For older messages, show a formatted date like "23 Dec 2025"
+    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+    return dateObj.toLocaleDateString('en-GB', options);
+  }
+
+
     function addMessageCard(msg) {
       const card = document.createElement("div");
+      const timeText = timeAgo(msg.date);
+      const formattedDate = new Date(msg.date).toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+      });
       card.className = "message-card";
-      // card.style.border = "1px solid #ddd";
-      // card.style.borderRadius = "8px";
-      // card.style.padding = "12px";
-      // card.style.background = "#fefefe";
-      // card.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
-      // card.style.transition = "0.3s";
-      // card.onmouseover = () => card.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
-      // card.onmouseout = () => card.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
-
       card.innerHTML = `
 			<div><strong>Name:</strong> ${msg.name}</div>
 			<div><strong>Email:</strong> ${msg.email}</div>
 			<div><strong>Message:</strong> ${msg.message}</div>			
-			<div class="message-meta">${msg.date}</div>
+			<div class="message-meta">${timeText}</div>
 		`;
 
     // div style="color: gray; font-size: 12px;">${msg.date}</div>
